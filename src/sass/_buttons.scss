@@ -1,0 +1,15 @@
+.btn {
+  padding: 0.8rem 1.3rem;
+  background-color: rgba(#000, 0.5);
+  border-radius: 4px;
+  border: 1px solid #fff;
+  color: #fff;
+  &--fill {
+    background-color: #fff;
+    color: #000;
+  }
+  &--circle {
+    border-radius: 50%;
+  }
+  cursor: pointer;
+}

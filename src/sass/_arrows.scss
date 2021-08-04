@@ -1,0 +1,31 @@
+.next,
+.prev {
+  top: calc(50% - 20px);
+  position: absolute;
+  background: transparent;
+  border-radius: 30px;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 2;
+  cursor: pointer;
+  & svg {
+    height: 3rem;
+    width: 3rem;
+    fill: $color-grey;
+  }
+}
+
+.next {
+  right: 10px;
+}
+
+.prev {
+  left: 10px;
+  //   left: 10px;
+}

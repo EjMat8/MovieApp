@@ -1,0 +1,30 @@
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: -1;
+  display: flex;
+  color: $color-grey;
+  padding: 1.4rem 2rem;
+  column-gap: 2rem;
+  align-items: center;
+  & > *:not(:nth-child(3)) {
+    cursor: pointer;
+  }
+  & span:nth-of-type(2) {
+    display: flex;
+    align-items: center;
+    column-gap: 2px;
+  }
+  &__icons {
+    display: flex;
+    column-gap: 1.5rem;
+    margin-right: auto;
+    & svg {
+      fill: #fff;
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+.nav {
+  background-color: rgba(#000, 0.8);
+  padding: 1.5rem 1.2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+  & ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    column-gap: 2.5rem;
+  }
+  & li {
+    &:first-child .logo {
+      border-right: 1px solid rgb(221, 221, 221);
+    }
+    &:last-child {
+      margin-right: 1rem;
+    }
+  }
+  & a,
+  & span {
+    text-decoration: none;
+    color: $color-grey;
+    transition: color 0.2s;
+    &:hover {
+      color: #fff;
+    }
+  }
+  & a {
+    font-size: 1.7rem;
+  }
+  & span {
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+
+  &__list--2 {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  & .search__icon {
+    position: relative;
+    fill: $color-grey;
+    height: 2rem;
+    width: 2rem;
+    transition: fill 0.2s;
+    z-index: 2;
+    cursor: pointer;
+  }
+  & .search__input {
+    position: relative;
+    z-index: 1;
+    padding: 0.8rem 4rem;
+    border: none;
+    border-radius: 1px;
+    width: 25rem;
+    transform: translateX(-3rem);
+    background-color: rgba($color: #fff, $alpha: 1);
+  }
+
+  & .logo svg {
+    height: 3rem;
+    width: 10rem;
+    & path {
+      stroke: #000;
+      stroke-width: 2px;
+      stroke-linejoin: round;
+    }
+  }
+}
