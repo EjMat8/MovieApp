@@ -28,22 +28,33 @@ function RatingStars({ setRate, auth, rateParams }) {
   const [rated, setRated] = useState(false);
   const [val, setVal] = useState(0);
   const { rated: rateState } = useSelector((state) => state);
-  const value = rateState[rateParams.category][rateParams.showID]?.rating;
+  let value;
+  if (auth.isLoggedIn)
+    value = rateState[rateParams?.category][rateParams?.showID]?.rating;
+  else value = null;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (rated)
+    if (rated && auth.isLoggedIn)
       setTimeout(() => {
         setRated(false);
         dispatch(
           fetchGuestsShow(
             auth.sessionID,
-            rateParams.category,
-            rateParams.showID
+            rateParams?.category,
+            rateParams?.showID
           )
         );
       }, 2000);
-  }, [rated, dispatch, auth.sessionID, rateParams.category, rateParams.showID]);
+  }, [
+    rated,
+    dispatch,
+    auth.sessionID,
+    rateParams?.category,
+    auth.isLoggedIn,
+    rateParams?.showID,
+  ]);
 
   const ratingChanged = (newRating) => {
     if (!auth.isLoggedIn) setRate(true);

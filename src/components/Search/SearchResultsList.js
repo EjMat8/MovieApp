@@ -24,21 +24,22 @@ export default function SearchResultsList({ query }) {
 
   return (
     <div className="search-list">
-      {results.length &&
-        results.map((el, i) => {
-          return (
-            <ShowItem
-              key={el.id}
-              id={el.id}
-              ref={results.length === i + 1 ? lastShowElementRef : null}
-              imageURL={`${IMAGE_URL}${IMAGE_SIZES.backdropSizes[1]}${
-                el.backdrop_path || el.poster_path
-              }`}
-              title={el.title || el.name}
-              category={el.media_type}
-            />
-          );
-        })}
+      {results.length
+        ? results.map((el, i) => {
+            return (
+              <ShowItem
+                key={el.id}
+                id={el.id}
+                ref={results.length === i + 1 ? lastShowElementRef : null}
+                imageURL={`${IMAGE_URL}${IMAGE_SIZES.backdropSizes[1]}${
+                  el.backdrop_path || el.poster_path
+                }`}
+                title={el.title || el.name}
+                category={el.media_type}
+              />
+            );
+          })
+        : !loading && <ErrorM message="Nothing Found" />}
       {loading && <Loader />}
       {error && <ErrorM message="Could not find what you were looking for!" />}
     </div>

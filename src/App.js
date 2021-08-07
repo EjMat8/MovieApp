@@ -29,6 +29,10 @@ export default function App() {
     getAllMovieData();
     const auth = JSON.parse(localStorage.getItem("login"));
     if (!auth) return;
+    if (new Date(auth.expiresAt).getTime() <= new Date().getTime()) {
+      localStorage.removeItem("login");
+      return;
+    }
     dispatch(authActions.signIn(auth));
   }, [dispatch, getAllMovieData]);
 

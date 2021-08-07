@@ -8,7 +8,7 @@ export default function AccountPage() {
   const rated = { movie: movie, tv: tv };
   const ratedKeys = Object.keys(rated);
   return (
-    <div class="account-ratings">
+    <div className="account-ratings">
       {Object.values(rated).map((el, i) => (
         <RatingContainList
           key={ratedKeys[i]}

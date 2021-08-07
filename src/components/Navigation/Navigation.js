@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../assets/logo";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import Search from "../Search/Search";
 import { authActions } from "../../store/auth-slice";
 import { queryAction } from "../../store/query-slice";
@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../UI/Modal";
 export default function Navigation() {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const history = useHistory();
   const { auth } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
   const [hoverEl, setHoverEl] = useState(false);
@@ -57,7 +59,11 @@ export default function Navigation() {
                 >
                   <button
                     className="btn"
-                    onClick={() => dispatch(authActions.signOut())}
+                    onClick={() => {
+                      dispatch(authActions.signOut());
+                      history.replace("/");
+                      localStorage.removeItem("login");
+                    }}
                   >
                     Logout
                   </button>
@@ -68,7 +74,11 @@ export default function Navigation() {
 
           <li>
             <Link
-              to={auth.isLoggedIn && !auth.isGuest ? "/account-watchlist" : "/"}
+              to={
+                auth.isLoggedIn && !auth.isGuest
+                  ? "/account-watchlist"
+                  : pathname
+              }
               onClick={() => {
                 onClickHandler(true);
                 dispatch(queryAction.setQuery(""));
