@@ -8,9 +8,14 @@ import { Switch, Route } from "react-router-dom";
 import ShowDetailPage from "./pages/ShowDetailPage";
 import { getMovie } from "./store/movie-action";
 import Loader from "./components/UI/Loader";
+import AuthPage from "./pages/AuthPage";
+import { authActions } from "./store/auth-slice";
+import AccountPage from "./pages/AccountPage";
+import { fetchGuestsRated } from "./store/rate-action";
+
 export default function App() {
   const dispatch = useDispatch();
-  const movie = useSelector((state) => state.movie);
+  const { movie, auth } = useSelector((state) => state);
   const getAllMovieData = useCallback(() => {
     dispatch(getMovie("trending"));
     dispatch(getMovie("series"));
@@ -22,7 +27,16 @@ export default function App() {
   }, [dispatch]);
   useEffect(() => {
     getAllMovieData();
+    const auth = JSON.parse(localStorage.getItem("login"));
+    if (!auth) return;
+    dispatch(authActions.signIn(auth));
   }, [dispatch, getAllMovieData]);
+
+  useEffect(() => {
+    if (auth.isLoggedIn && auth.isGuest) {
+      dispatch(fetchGuestsRated(auth.sessionID));
+    }
+  }, [auth.isLoggedIn, auth.isGuest, auth.sessionID, dispatch]);
   return (
     <Layout>
       {Object.values(movie).every((el) => !!el.length) ? (
@@ -30,7 +44,12 @@ export default function App() {
           <Route path="/" exact>
             <Home />
           </Route>
-
+          <Route path="/auth">
+            <AuthPage />
+          </Route>
+          <Route path="/account">
+            <AccountPage />
+          </Route>
           <Route path="/show/:category/:id">
             <ShowDetailPage />
           </Route>

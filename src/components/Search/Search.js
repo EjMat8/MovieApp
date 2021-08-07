@@ -7,8 +7,8 @@ import { queryAction } from "../../store/query-slice";
 
 export default function Search() {
   const history = useHistory();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const { term: query } = useSelector((state) => state.query);
 
   const onChangeHander = (e) => {
@@ -20,7 +20,10 @@ export default function Search() {
         history.replace(`/search?q=${query}`);
       }
       if (!query.trim()) {
-        if (pathname.indexOf("/") !== pathname.lastIndexOf("/"))
+        if (
+          pathname.indexOf("/") !== pathname.lastIndexOf("/") ||
+          !pathname.includes("search")
+        )
           history.replace(pathname);
         else history.replace("/");
       }

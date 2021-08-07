@@ -1,10 +1,29 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import backdrop from "../../assets/backdrop.png";
 import { IMAGE_URL, IMAGE_SIZES } from "../../lib/api";
 import ShowTrailer from "../Shows/ShowDetails/ShowTrailer";
 import { FaPlay, FaStar } from "react-icons/fa";
+import RatingStars from "../Shows/ShowRating/RatingStars";
+import Modal from "../UI/Modal";
+
 const Details = ({ selectedShow, genre, isLoading, type }) => {
   const [trailer, openTrailer] = useState(false);
+  const [rate, setRate] = useState(false);
+  const [list, setList] = useState(false);
+  const { auth } = useSelector((state) => state);
+
+  const onClickHandler = () => {
+    setRate(false);
+    setList(false);
+  };
+
+  const rateParams = {
+    category: type,
+    showID: selectedShow.id,
+    guest: auth.isGuest,
+    sessionID: auth.sessionID,
+  };
   const imageUrl = `${IMAGE_URL}/${IMAGE_SIZES.backdropSizes[2]}/${
     selectedShow.backdrop_path || selectedShow.poster_path
   }`;
@@ -30,11 +49,57 @@ const Details = ({ selectedShow, genre, isLoading, type }) => {
             <button className="btn btn--fill">
               <FaPlay /> Play
             </button>
-            <button className="btn" onClick={() => openTrailer(true)}>
+            <button
+              className="btn"
+              onClick={() => {
+                openTrailer(true);
+              }}
+            >
               <FaPlay /> Trailer
             </button>
-            <button className="btn btn--circle">+</button>
+            <button
+              className="btn btn--circle"
+              onClick={() => {
+                setList(true);
+              }}
+            >
+              +
+            </button>
+
+            <RatingStars
+              auth={auth}
+              setRate={setRate}
+              rateParams={auth.isLoggedIn ? rateParams : null}
+            />
+
+            {(list || rate) && !auth.isLoggedIn && (
+              <Modal onClick={onClickHandler}>
+                <div
+                  className="modal__content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <p>
+                    {rate
+                      ? "Login as guest or with a tmdb account"
+                      : list
+                      ? "Login with tmdb account"
+                      : ""}
+                  </p>
+                </div>
+              </Modal>
+            )}
+            {auth.isLoggedIn && auth.isGuest && list && (
+              <Modal onClick={onClickHandler}>
+                <div
+                  className="modal__content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <p>Cannot add to watchlist if you are signed in as guest!</p>
+                </div>
+              </Modal>
+            )}
           </div>
+
           <span className="show-detail__about">
             {selectedShow.release_date || selectedShow.first_air_date || "TBA"}
             &nbsp; | &nbsp;

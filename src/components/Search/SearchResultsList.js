@@ -8,7 +8,7 @@ export default function SearchResultsList({ query }) {
   const [pageNum, setPageNum] = useState(1);
   const { loading, error, results, hasMore } = useSearch(query, pageNum);
   const observer = useRef();
-  const lastBookElementRef = useCallback(
+  const lastShowElementRef = useCallback(
     (node) => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
@@ -30,7 +30,7 @@ export default function SearchResultsList({ query }) {
             <ShowItem
               key={el.id}
               id={el.id}
-              ref={results.length === i + 1 ? lastBookElementRef : null}
+              ref={results.length === i + 1 ? lastShowElementRef : null}
               imageURL={`${IMAGE_URL}${IMAGE_SIZES.backdropSizes[1]}${
                 el.backdrop_path || el.poster_path
               }`}
