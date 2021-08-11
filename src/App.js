@@ -43,6 +43,7 @@ export default function App() {
       dispatch(fetchRated(auth.sessionID, auth.isGuest));
     }
   }, [auth.isLoggedIn, auth.isGuest, auth.sessionID, dispatch]);
+
   return (
     <Layout>
       {Object.values(movie).every((el) => !!el.length) ? (

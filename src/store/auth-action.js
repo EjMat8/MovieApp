@@ -21,7 +21,8 @@ export const accountRequestToken = () => async () => {
     localStorage.removeItem("token");
 
   localStorage.setItem("token", JSON.stringify(reqToken));
-  window.location.href = `https://www.themoviedb.org/authenticate/${data.data.request_token}?redirect_to=http://movie-up1.netlfiy.app/auth/approved`;
+  const origin = window.location.origin;
+  window.location.href = `https://www.themoviedb.org/authenticate/${data.data.request_token}?redirect_to=${origin}/auth/approved`;
 };
 
 export const accountSignIn = () => async (dispatch, getState) => {
