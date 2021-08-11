@@ -51,7 +51,7 @@ export default function App() {
             <Home />
           </Route>
           <Route path="/auth" exact>
-            {auth.isLoggedIn ? <AuthPage /> : <Redirect to="/account" />}
+            {!auth.isLoggedIn ? <AuthPage /> : <Redirect to="/account" />}
           </Route>
           <Route path="/auth/:request">
             <AuthApprovedPage />
