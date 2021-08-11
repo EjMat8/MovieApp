@@ -89,7 +89,7 @@ export default function Navigation() {
           </li>
         </ul>
       </nav>
-      {open && (
+      {open && auth.isGuest && (
         <Modal onClick={onClickHandler.bind(null, false)}>
           <div className="modal__content" onClick={(e) => e.stopPropagation()}>
             <p>You need to sign in with a TMDB account to access this page</p>

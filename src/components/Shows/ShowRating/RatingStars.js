@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactStars from "react-rating-stars-component";
 import movies, { RATE_URL } from "../../../lib/api";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGuestsShow } from "../../../store/rate-action";
+import { fetchShow } from "../../../store/rate-action";
 
 const ratingVariant = {
   hidden: {
@@ -16,7 +16,7 @@ const ratingVariant = {
     transition: {
       type: "spring",
       stiffness: 120,
-      duration: 0.1,
+      duration: 0.05,
     },
   },
   exit: {
@@ -40,13 +40,14 @@ function RatingStars({ setRate, auth, rateParams }) {
       setTimeout(() => {
         setRated(false);
         dispatch(
-          fetchGuestsShow(
+          fetchShow(
             auth.sessionID,
             rateParams?.category,
-            rateParams?.showID
+            rateParams?.showID,
+            auth.isGuest
           )
         );
-      }, 2000);
+      }, 1200);
   }, [
     rated,
     dispatch,
@@ -54,6 +55,7 @@ function RatingStars({ setRate, auth, rateParams }) {
     rateParams?.category,
     auth.isLoggedIn,
     rateParams?.showID,
+    auth.isGuest,
   ]);
 
   const ratingChanged = (newRating) => {

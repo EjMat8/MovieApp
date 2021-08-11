@@ -15,7 +15,7 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.isGuest = action.payload.isGuest;
       state.sessionID = action.payload.sessionID;
-      state.expiresAt = action.payload.expiresAt;
+      state.expiresAt = action.payload.isGuest ? action.payload.expiresAt : "";
     },
     signOut(state) {
       state.isLoggedIn = false;

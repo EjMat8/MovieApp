@@ -12,4 +12,15 @@
     border-radius: 50%;
   }
   cursor: pointer;
+  &__delete {
+    font-size: 2.5rem;
+    font-weight: 300;
+    border: none;
+    background-color: transparent;
+    border-radius: 50%;
+    padding: 1px 8px;
+    cursor: pointer;
+    color: $color-grey;
+    box-shadow: 0 1rem 2rem rgba(#000, 0.2);
+  }
 }

@@ -29,6 +29,12 @@ const ratedSlice = createSlice({
     setLoading(state, action) {
       state.isLoading = action.payload;
     },
+    deleteRating(state, action) {
+      state[action.payload.type] = _.omit(
+        state[action.payload.type],
+        action.payload.id
+      );
+    },
   },
 });
 

@@ -4,14 +4,15 @@ import Home from "./pages/Home";
 import SearchPage from "./pages/SearchPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./components/Layout/Layout";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import ShowDetailPage from "./pages/ShowDetailPage";
 import { getMovie } from "./store/movie-action";
 import Loader from "./components/UI/Loader";
 import AuthPage from "./pages/AuthPage";
 import { authActions } from "./store/auth-slice";
 import AccountPage from "./pages/AccountPage";
-import { fetchGuestsRated } from "./store/rate-action";
+import { fetchRated } from "./store/rate-action";
+import AuthApprovedPage from "./pages/AuthApprovedPage";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -29,16 +30,17 @@ export default function App() {
     getAllMovieData();
     const auth = JSON.parse(localStorage.getItem("login"));
     if (!auth) return;
-    if (new Date(auth.expiresAt).getTime() <= new Date().getTime()) {
-      localStorage.removeItem("login");
+    if (auth.expiresAt) {
+      new Date(auth.expiresAt).getTime() <= new Date().getTime() &&
+        localStorage.removeItem("login");
       return;
     }
     dispatch(authActions.signIn(auth));
   }, [dispatch, getAllMovieData]);
 
   useEffect(() => {
-    if (auth.isLoggedIn && auth.isGuest) {
-      dispatch(fetchGuestsRated(auth.sessionID));
+    if (auth.isLoggedIn) {
+      dispatch(fetchRated(auth.sessionID, auth.isGuest));
     }
   }, [auth.isLoggedIn, auth.isGuest, auth.sessionID, dispatch]);
   return (
@@ -48,11 +50,14 @@ export default function App() {
           <Route path="/" exact>
             <Home />
           </Route>
-          <Route path="/auth">
-            <AuthPage />
+          <Route path="/auth" exact>
+            {auth.isLoggedIn ? <AuthPage /> : <Redirect to="/account" />}
+          </Route>
+          <Route path="/auth/:request">
+            <AuthApprovedPage />
           </Route>
           <Route path="/account">
-            <AccountPage />
+            {auth.isLoggedIn ? <AccountPage /> : <Redirect to="/" />}
           </Route>
           <Route path="/show/:category/:id">
             <ShowDetailPage />
