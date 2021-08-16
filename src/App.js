@@ -13,6 +13,7 @@ import { authActions } from "./store/auth-slice";
 import AccountPage from "./pages/AccountPage";
 import { fetchRated } from "./store/rate-action";
 import AuthApprovedPage from "./pages/AuthApprovedPage";
+import ListPage from "./pages/ListPage";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export default function App() {
 
   return (
     <Layout>
-      {Object.values(movie).every((el) => !!el.length) ? (
+      {Object.values(movie).some((el) => !!el.length) ? (
         <Switch>
           <Route path="/" exact>
             <Home />
@@ -56,6 +57,13 @@ export default function App() {
           </Route>
           <Route path="/auth/:request">
             <AuthApprovedPage />
+          </Route>
+          <Route path="/account-watchlist/:type">
+            {auth.isLoggedIn && !auth.isGuest ? (
+              <ListPage />
+            ) : (
+              <Redirect to="/" />
+            )}
           </Route>
           <Route path="/account">
             {auth.isLoggedIn ? <AccountPage /> : <Redirect to="/" />}

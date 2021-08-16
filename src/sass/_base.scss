@@ -1,5 +1,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 $color-grey: #a1a1a1;
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 37.5em) {
+      @content;
+    } //600px
+  }
+  @if $breakpoint == tab-port {
+    @media only screen and (max-width: 56.25em) {
+      @content;
+    } //900px
+  }
+  @if $breakpoint == tab-land {
+    @media only screen and (max-width: 75em) {
+      @content;
+    } //1200px
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -14,6 +33,15 @@ $color-grey: #a1a1a1;
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+  @include respond(tab-land) {
+    font-size: 56.2%;
+  }
+  @include respond(tab-port) {
+    font-size: 50%;
+  }
+  @include respond(phone) {
+    font-size: 48.875%;
+  }
 }
 
 body {
@@ -27,6 +55,12 @@ main {
 //typography
 .heading-1 {
   font-size: 5.5rem;
+  @include respond(phone) {
+    font-size: 3.5rem;
+  }
+  @media only screen and (max-width: 350px) {
+    font-size: 2.5rem;
+  }
   font-weight: 300;
   text-transform: uppercase;
   word-spacing: 5px;
@@ -37,6 +71,12 @@ main {
   text-transform: uppercase;
   color: $color-grey;
   letter-spacing: 1px;
+}
+.heading-3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 .contain {
   padding: 1.4rem 2rem;

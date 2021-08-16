@@ -1,6 +1,23 @@
 .show-row {
   margin-bottom: 5rem;
   padding: 1.4rem 2rem;
+  @media only screen and (max-width: 444px) {
+    &:last-child {
+      margin-bottom: 8rem;
+    }
+  }
+  @include respond(tab-land) {
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+  }
+  @include respond(tab-land) {
+    &:not(:last-child) {
+      margin-bottom: 0.8rem;
+    }
+    padding: 1rem 1.6rem;
+  }
+
   & .heading-2 {
     margin-bottom: 1rem;
   }
@@ -34,7 +51,10 @@
   flex: 0 0 35rem;
   position: relative;
   cursor: pointer;
-
+  @include respond(phone) {
+    height: 20rem;
+    flex: 0 0 30rem;
+  }
   & a {
     text-decoration: none;
   }

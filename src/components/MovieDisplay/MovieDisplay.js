@@ -7,6 +7,7 @@ import { wrap } from "popmotion";
 import { useMovieList } from "../../hooks/useMovieList";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import MovieDisplayItem from "./MovieDisplayItem";
+import Loader from "../UI/Loader";
 
 import { IMAGE_URL, IMAGE_SIZES } from "../../lib/api";
 
@@ -32,21 +33,10 @@ const variants = {
 };
 
 export default function MovieDisplay() {
-  const displayMovies = useMovieList("trending")[0].slice(0, 5);
+  const movieTrend = useMovieList("trending");
 
-  const movies = displayMovies.map((el) => (
-    <MovieDisplayItem
-      key={el.id}
-      imageURL={`${IMAGE_URL}/${IMAGE_SIZES.backdropSizes[3]}/${
-        el.backdrop_path || el.poster_path
-      }`}
-      title={el.title || el.original_title}
-      id={el.id}
-    />
-  ));
   const [[page, direction], setPage] = useState([0, 0]);
 
-  const imageIndex = wrap(0, movies.length, page);
   const paginate = useCallback(
     (newDirection) => {
       setPage([page + newDirection, newDirection]);
@@ -60,6 +50,21 @@ export default function MovieDisplay() {
       clearInterval(interval);
     };
   }, [paginate]);
+
+  if (!movieTrend.length) return <Loader />;
+
+  const displayMovies = movieTrend[0].slice(0, 5);
+  const movies = displayMovies.map((el) => (
+    <MovieDisplayItem
+      key={el.id}
+      imageURL={`${IMAGE_URL}/${IMAGE_SIZES.backdropSizes[1]}/${
+        el.backdrop_path || el.poster_path
+      }`}
+      title={el.name || el.title || el.original_title || el.original_name}
+      id={el.id}
+    />
+  ));
+  const imageIndex = wrap(0, movies.length, page);
   return (
     <div className="movie-display">
       <AnimatePresence initial={false} custom={direction}>

@@ -4,12 +4,19 @@
   border-radius: 4px;
   border: 1px solid #fff;
   color: #fff;
+  @media only screen and (max-width: 361px) {
+    font-size: 10rem;
+    padding: 0.2vw 0.4vw;
+  }
   &--fill {
     background-color: #fff;
     color: #000;
   }
   &--circle {
     border-radius: 50%;
+    @media only screen and (max-width: 361px) {
+      padding: 1vw 4vw;
+    }
   }
   cursor: pointer;
   &__delete {

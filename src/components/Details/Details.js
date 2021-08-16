@@ -6,11 +6,13 @@ import ShowTrailer from "../Shows/ShowDetails/ShowTrailer";
 import { FaPlay, FaStar } from "react-icons/fa";
 import RatingStars from "../Shows/ShowRating/RatingStars";
 import Modal from "../UI/Modal";
+import { addToWatchList } from "../../lib/action";
 
 const Details = ({ selectedShow, genre, isLoading, type }) => {
   const [trailer, openTrailer] = useState(false);
   const [rate, setRate] = useState(false);
   const [list, setList] = useState(false);
+  const [added, setAdded] = useState(false);
   const { auth } = useSelector((state) => state);
 
   const onClickHandler = () => {
@@ -24,7 +26,7 @@ const Details = ({ selectedShow, genre, isLoading, type }) => {
     guest: auth.isGuest,
     sessionID: auth.sessionID,
   };
-  const imageUrl = `${IMAGE_URL}/${IMAGE_SIZES.backdropSizes[2]}/${
+  const imageUrl = `${IMAGE_URL}/${IMAGE_SIZES.backdropSizes[1]}/${
     selectedShow.backdrop_path || selectedShow.poster_path
   }`;
   return (
@@ -61,6 +63,10 @@ const Details = ({ selectedShow, genre, isLoading, type }) => {
               className="btn btn--circle"
               onClick={() => {
                 setList(true);
+                if (auth.isLoggedIn && !auth.isGuest)
+                  addToWatchList(auth.sessionID, selectedShow.id, type).then(
+                    () => setAdded(true)
+                  );
               }}
             >
               +
@@ -115,6 +121,11 @@ const Details = ({ selectedShow, genre, isLoading, type }) => {
           id={selectedShow.id}
           onClick={openTrailer.bind(null, false)}
         />
+      )}
+      {added && (
+        <Modal onClick={setAdded.bind(null, false)}>
+          <div className="modal__content">ADDED TO WATCHLIST!</div>
+        </Modal>
       )}
     </React.Fragment>
   );

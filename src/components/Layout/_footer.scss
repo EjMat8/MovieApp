@@ -8,7 +8,18 @@
   color: $color-grey;
   padding: 1.4rem 2rem;
   column-gap: 2rem;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   align-items: center;
+
+  @include respond(tab-port) {
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0.7rem 1rem;
+  }
+  @media only screen and (max-width: 444px) {
+    font-size: 1.3rem;
+  }
   & > *:not(:nth-child(3)) {
     cursor: pointer;
   }
@@ -21,6 +32,9 @@
     display: flex;
     column-gap: 1.5rem;
     margin-right: auto;
+    @include respond(tab-port) {
+      margin-right: 0;
+    }
     & svg {
       fill: #fff;
       height: 2rem;

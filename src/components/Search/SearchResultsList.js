@@ -4,9 +4,13 @@ import { IMAGE_URL, IMAGE_SIZES } from "../../lib/api";
 import ShowItem from "../Shows/ShowList/ShowItem";
 import Loader from "../UI/Loader";
 import ErrorM from "../UI/Error";
-export default function SearchResultsList({ query }) {
+export default function SearchResultsList({
+  query = null,
+  url = null,
+  type = null,
+}) {
   const [pageNum, setPageNum] = useState(1);
-  const { loading, error, results, hasMore } = useSearch(query, pageNum);
+  const { loading, error, results, hasMore } = useSearch(query, pageNum, url);
   const observer = useRef();
   const lastShowElementRef = useCallback(
     (node) => {
@@ -35,7 +39,7 @@ export default function SearchResultsList({ query }) {
                   el.backdrop_path || el.poster_path
                 }`}
                 title={el.title || el.name}
-                category={el.media_type}
+                category={type || el.media_type}
               />
             );
           })

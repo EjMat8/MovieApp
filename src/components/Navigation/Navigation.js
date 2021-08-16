@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../assets/logo";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Search from "../Search/Search";
 import { authActions } from "../../store/auth-slice";
 import { queryAction } from "../../store/query-slice";
@@ -9,11 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../UI/Modal";
 export default function Navigation() {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+
   const history = useHistory();
   const { auth } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
   const [hoverEl, setHoverEl] = useState(false);
+  const [hoverWl, setHoverWl] = useState(false);
+
+  const clearQuery = () => {
+    dispatch(queryAction.setQuery(""));
+  };
+
   const onClickHandler = (op) => {
     setOpen(op);
   };
@@ -40,7 +46,7 @@ export default function Navigation() {
           >
             <Link
               to={auth.isLoggedIn ? "/account" : "/auth"}
-              onClick={() => dispatch(queryAction.setQuery(""))}
+              onClick={clearQuery}
             >
               {auth.isLoggedIn
                 ? auth.isGuest
@@ -72,21 +78,41 @@ export default function Navigation() {
             </AnimatePresence>
           </motion.li>
 
-          <li>
-            <Link
-              to={
-                auth.isLoggedIn && !auth.isGuest
-                  ? "/account-watchlist"
-                  : pathname
-              }
-              onClick={() => {
-                onClickHandler(true);
-                dispatch(queryAction.setQuery(""));
-              }}
-            >
-              Watchlist (0)
-            </Link>
-          </li>
+          <motion.li
+            className="nav__watchlist"
+            onClick={
+              !auth.isLoggedIn || auth.isGuest
+                ? () => onClickHandler(true)
+                : null
+            }
+            onHoverStart={setHoverWl.bind(null, true)}
+            onHoverEnd={setHoverWl.bind(null, false)}
+          >
+            Watchlist
+            <AnimatePresence>
+              {hoverWl && auth.isLoggedIn && !auth.isGuest && (
+                <motion.div
+                  key="list-action"
+                  className="nav__list-actions"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <Link to="/account-watchlist/movie" onClick={clearQuery}>
+                    <button
+                      className="btn"
+                      style={{ marginTop: 7, marginBottom: 7 }}
+                    >
+                      Movie
+                    </button>
+                  </Link>
+                  <Link to="/account-watchlist/tv" onClick={clearQuery}>
+                    <button className="btn">TV</button>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.li>
         </ul>
       </nav>
       {(!auth.isLoggedIn || auth.isGuest) && open && (

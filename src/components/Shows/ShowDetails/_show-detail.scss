@@ -12,6 +12,7 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
+    object-position: center;
   }
   &__info {
     position: absolute;
@@ -27,6 +28,9 @@
   &__actions {
     display: flex;
     column-gap: 2rem;
+    @media only screen and (max-width: 361px) {
+      column-gap: 1rem;
+    }
     & > * {
       font-size: 1.7rem;
     }

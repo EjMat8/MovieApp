@@ -27,4 +27,4 @@ const ShowItem = React.forwardRef(
     );
   }
 );
-export default ShowItem;
+export default React.memo(ShowItem);

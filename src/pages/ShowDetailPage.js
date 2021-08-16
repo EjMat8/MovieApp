@@ -4,9 +4,19 @@ import { GENRE_URL } from "../lib/api";
 import { useHttp } from "../hooks/useHttp";
 import ShowDetail from "../components/Shows/ShowDetails/ShowDetail";
 import SearchDetail from "../components/Search/SearchDetail";
+import ErrorM from "../components/UI/Error";
 export default function ShowDetailPage() {
   const { category, id } = useParams();
   const [data, getData] = useHttp();
+  const categories = [
+    "trending",
+    "movies",
+    "series",
+    "family",
+    "music",
+    "movie",
+    "tv",
+  ];
   useEffect(() => {
     getData(GENRE_URL, "get");
   }, [getData]);
@@ -28,6 +38,8 @@ export default function ShowDetailPage() {
     data,
     genre,
   };
+  if (!categories.some((el) => el === category) || typeof +id !== "number")
+    return <ErrorM message="Unknown Show" />;
   if (category !== "movie" && category !== "tv")
     return <ShowDetail {...props} />;
   else return <SearchDetail {...props} />;

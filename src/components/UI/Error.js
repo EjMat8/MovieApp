@@ -10,6 +10,7 @@ export default function Error({ message }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        height: "100vh",
       }}
     >
       {message}

@@ -17,10 +17,10 @@ export const RATED_GUEST_URL = (id, type) =>
     type === "movie" ? "movies" : "tv"
   }?api_key=${KEY}&language=en-US&sort_by=created_at.asc`;
 
-export const RATED_ACC_URL = (accId, type, page = 1) =>
+export const RATED_ACC_URL = (accId, type) =>
   `/account/{account_id}/rated/${
     type === "movie" ? "movies" : "tv"
-  }?api_key=${KEY}&language=en-US&session_id=${accId}&sort_by=created_at.asc&page=${page}`;
+  }?api_key=${KEY}&language=en-US&session_id=${accId}&sort_by=created_at.asc&page=1`;
 
 export const DETAIL_URL = (type, id) =>
   `${type}/${id}?api_key=${KEY}&language=en-US`;
@@ -35,6 +35,11 @@ export const DELETE_RATE_URL = (type, id, authId, isGuest) =>
   `${type}/${id}/rating?api_key=${KEY}&${
     isGuest ? "guest_" : ""
   }session_id=${authId}`;
+
+export const WATCHLIST_URL = (id, type) =>
+  `/account/{account_id}/watchlist/${
+    type === "movie" ? "movies" : "tv"
+  }?api_key=${KEY}&language=en-US&session_id=${id}&sort_by=created_at.asc`;
 
 export default axios.create({
   baseURL: "https://api.themoviedb.org/3",
